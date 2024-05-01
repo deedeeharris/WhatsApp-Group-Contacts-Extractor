@@ -81,7 +81,7 @@ st.markdown('''# WhatsApp Group Contacts Extractor
    - After processing, download the excel file.
 
 4. **Language Support**:
-   - The app assumes that the WhatsApp chat log is in Hebrew.
+   - The app assumes that the WhatsApp chat log is in English\Hebrew.
    - For support in other languages, please contact Yedidya Harris.
 
 5. **Disclaimer**:
