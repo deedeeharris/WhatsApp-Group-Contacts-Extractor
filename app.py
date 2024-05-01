@@ -4,8 +4,8 @@ import pandas as pd
 
 def process_whatsapp_chat_log(file_obj, output_excel_path):
     # Define regex patterns for detecting joins and leaves
-    join_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.*?) בוצעה'
-    leave_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) יצא/ה'
+    join_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.+?) בוצעה'
+    leave_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - (.+?) יצא/ה'
 
     # Lists to store join and leave data
     join_data = []
