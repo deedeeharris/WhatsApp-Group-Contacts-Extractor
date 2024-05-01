@@ -77,7 +77,7 @@ st.markdown('''# WhatsApp Group Contacts Extractor
    - Use the app at your own risk.
    - This app was developed by Yedidya Harris. For inquiries or feedback, you can contact Yedidya Harris via [LinkedIn](https://www.linkedin.com/in/yedidya-harris/).
 
-'''
+''')
 uploaded_file = st.file_uploader("Choose a WhatsApp chat log file (.txt)")
 if uploaded_file is not None:
     with open("temp_chat_file.txt", "wb") as f:
