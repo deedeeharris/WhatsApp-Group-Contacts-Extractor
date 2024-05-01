@@ -1,8 +1,4 @@
-import streamlit as st
-import re
-import pandas as pd
-
-def process_whatsapp_chat_log(file_path, output_excel_path):
+def process_whatsapp_chat_log(file_obj, output_excel_path):
     # Define regex patterns for detecting joins and leaves
     join_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.*?) בוצעה'
     leave_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) יצא/ה'
@@ -11,21 +7,21 @@ def process_whatsapp_chat_log(file_path, output_excel_path):
     join_data = []
     leave_data = []
 
-    # Read the file and extract events
-    with open(file_path, 'r', encoding='utf-8') as file:
-        for line in file:
-            join_match = re.search(join_pattern, line)
-            leave_match = re.search(leave_pattern, line)
+    # Read the file contents and extract events
+    lines = file_obj.readlines()
+    for line in lines:
+        join_match = re.search(join_pattern, line)
+        leave_match = re.search(leave_pattern, line)
 
-            if join_match:
-                datetime, user_info = line.split(' - ')[:2]
-                user = join_match.group(1)
-                join_data.append((datetime, user))
+        if join_match:
+            datetime, user_info = line.split(' - ')[:2]
+            user = join_match.group(1)
+            join_data.append((datetime, user))
 
-            if leave_match:
-                datetime, user_info = line.split(' - ')[:2]
-                user = leave_match.group(1)
-                leave_data.append((datetime, user))
+        if leave_match:
+            datetime, user_info = line.split(' - ')[:2]
+            user = leave_match.group(1)
+            leave_data.append((datetime, user))
 
     # Create DataFrames for joins and leaves
     df_joins = pd.DataFrame(join_data, columns=['Datetime', 'User'])
