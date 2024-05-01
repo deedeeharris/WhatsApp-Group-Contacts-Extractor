@@ -18,7 +18,7 @@ def process_chat(file_path):
     leave_data = []
     
     with open(file_path, 'r', encoding='utf-8') as file:
-        for line in lines:
+        for line in file:
             for pattern in join_patterns:
                 join_match = re.search(pattern, line)
                 if join_match:
