@@ -2,42 +2,49 @@ import streamlit as st
 import pandas as pd
 import re
 
-def process_chat(file_path):
-    join_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.*?) בוצעה'
-    leave_pattern = r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) יצא/ה'
-    
-    join_pattern_en = r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.*?) בוצעה'
-    leave_pattern_en = r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) left'
+def process_chat(lines):
+    # Adjusted regex patterns for enhanced extraction
+    join_patterns = [
+        r'\d+/\d+/\d+, \d+:\d+ - (.+?) joined using this community\'s invite link',  # English joins
+        r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.*?) בוצעה'  # Hebrew joins
+    ]
+    leave_patterns = [
+        r'\d+/\d+/\d+, \d+:\d+ - (.+?) left',  # English leaves
+        r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) יצא/ה',  # Hebrew leaves
+        r'\d+/\d+/\d+, \d+:\d+ - (.+?), and \d+ others left'  # English multiple leaves
+    ]
 
     join_data = []
     leave_data = []
 
-    with open(file_path, 'r', encoding='utf-8') as file:
-        for line in file:
-            join_match = re.search(join_pattern, line)
-            leave_match = re.search(leave_pattern, line)
+    for line in lines:
+        for pattern in join_patterns:
+            join_match = re.search(pattern, line)
             if join_match:
                 datetime, user_info = line.split(' - ')[:2]
                 user = join_match.group(1)
                 join_data.append((datetime, user))
+
+        for pattern in leave_patterns:
+            leave_match = re.search(pattern, line)
             if leave_match:
                 datetime, user_info = line.split(' - ')[:2]
                 user = leave_match.group(1)
                 leave_data.append((datetime, user))
 
+    # Create dataframes and process the data to determine final status
     df_joins = pd.DataFrame(join_data, columns=['Datetime', 'User'])
     df_leaves = pd.DataFrame(leave_data, columns=['Datetime', 'User'])
-
     df_joins['Action'] = 'Joined'
     df_leaves['Action'] = 'Left'
     df_combined = pd.concat([df_joins, df_leaves])
-    df_combined['Datetime'] = pd.to_datetime(df_combined['Datetime'], format='%d.%m.%Y, %H:%M')
+    df_combined['Datetime'] = pd.to_datetime(df_combined['Datetime'], errors='coerce')
     df_combined.sort_values(by='Datetime', inplace=True)
 
     final_status = df_combined.groupby('User').last()['Action'].reset_index()
     final_status['Status'] = final_status['Action'].map({'Joined': 'In', 'Left': 'Out'})
     final_status = final_status[['User', 'Status']]
-
+    
     # Remove duplicates based on 'User' and keep the last occurrence
     final_status.drop_duplicates(subset='User', keep='last', inplace=True)
     
