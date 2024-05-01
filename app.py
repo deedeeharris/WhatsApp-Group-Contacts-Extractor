@@ -34,6 +34,12 @@ def process_chat(file_path):
     final_status = df_combined.groupby('User').last()['Action'].reset_index()
     final_status['Status'] = final_status['Action'].map({'Joined': 'In', 'Left': 'Out'})
     final_status = final_status[['User', 'Status']]
+
+    # Remove duplicates based on 'User' and keep the last occurrence
+    final_status.drop_duplicates(subset='User', keep='last', inplace=True)
+    
+    # Sort final_status by 'Status' column so 'In' comes before 'Out'
+    final_status.sort_values(by='Status', ascending=True, inplace=True)
     
     return final_status
 
