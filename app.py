@@ -48,8 +48,36 @@ def save_df_to_excel(df):
     df.to_excel(output_path, index=False)
     return output_path
 
-st.title('WhatsApp Group Status Processor')
+st.markdown('''# WhatsApp Group Contacts Extractor
 
+## Instructions:
+
+1. **Export WhatsApp Chat History**:
+   - Open the WhatsApp group that you manage.
+   - Navigate to the group's settings or options.
+   - Look for the "Export Chat" or "Export Chat History" feature.
+   - Choose to export the chat without media (text-only format).
+   - Save the exported chat file to your device.
+
+2. **Upload the Chat History**:
+   - Access the WhatsApp Group Status Processor app.
+   - Click on the file uploader component labeled "Choose a WhatsApp chat log file (.txt)".
+   - Select the exported chat text file from your device for upload.
+
+3. **Process and Download**:
+   - Once the chat file is uploaded, the app will process it to extract user join and leave events.
+   - After processing, a download button labeled "Download Excel file with Status" will appear.
+   - Click on the download button to save the processed data as an Excel file to your device.
+
+4. **Language Support**:
+   - The app assumes that the WhatsApp chat log is in Hebrew.
+   - For support in other languages, please contact Yedidya Harris for updates.
+
+5. **Disclaimer**:
+   - Use the app at your own risk.
+   - This app was developed by Yedidya Harris. For inquiries or feedback, you can contact Yedidya Harris via [LinkedIn](https://www.linkedin.com/in/yedidya-harris/).
+
+'''
 uploaded_file = st.file_uploader("Choose a WhatsApp chat log file (.txt)")
 if uploaded_file is not None:
     with open("temp_chat_file.txt", "wb") as f:
