@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 
-def process_chat(file_path):
+def process_chat(lines):
     # Adjusted regex patterns for enhanced extraction
     join_patterns = [
         r'\d+/\d+/\d+, \d+:\d+ - (.+?) joined using this community\'s invite link',  # English joins
@@ -17,21 +17,20 @@ def process_chat(file_path):
     join_data = []
     leave_data = []
     
-    with open(file_path, 'r', encoding='utf-8') as file:
-        for line in file:
-            for pattern in join_patterns:
-                join_match = re.search(pattern, line)
-                if join_match:
-                    datetime, user_info = line.split(' - ')[:2]
-                    user = join_match.group(1)
-                    join_data.append((datetime, user))
-    
-            for pattern in leave_patterns:
-                leave_match = re.search(pattern, line)
-                if leave_match:
-                    datetime, user_info = line.split(' - ')[:2]
-                    user = leave_match.group(1)
-                    leave_data.append((datetime, user))
+    for line in lines:
+        for pattern in join_patterns:
+            join_match = re.search(pattern, line)
+            if join_match:
+                datetime, user_info = line.split(' - ')[:2]
+                user = join_match.group(1)
+                join_data.append((datetime, user))
+
+        for pattern in leave_patterns:
+            leave_match = re.search(pattern, line)
+            if leave_match:
+                datetime, user_info = line.split(' - ')[:2]
+                user = leave_match.group(1)
+                leave_data.append((datetime, user))
 
     # Create dataframes and process the data to determine final status
     df_joins = pd.DataFrame(join_data, columns=['Datetime', 'User'])
@@ -90,13 +89,12 @@ st.markdown('''# WhatsApp Group Contacts Extractor
 ''')
 uploaded_file = st.file_uploader("Choose a WhatsApp chat log file (.txt)")
 if uploaded_file is not None:
-    with open("temp_chat_file.txt", "wb") as f:
-        f.write(uploaded_file.getvalue())
-    processed_data = process_chat("temp_chat_file.txt")
-    output_file = save_df_to_excel(processed_data)
+    file_content = uploaded_file.getvalue().decode("utf-8").splitlines()
+    processed_data = process_chat(file_content)
+    output_path = save_df_to_excel(processed_data)
     st.download_button(
         label="Download Excel file with Status",
-        data=open(output_file, "rb"),
-        file_name=output_file,
-        mime="application/vnd.ms-excel"
+        data=open(output_path, "rb"),
+        file_name='WhatsApp_Group_Status.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
