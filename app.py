@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 
-def process_chat((file_path):
+def process_chat(file_path):
     # Adjusted regex patterns for enhanced extraction
     join_patterns = [
         r'\d+/\d+/\d+, \d+:\d+ - (.+?) joined using this community\'s invite link',  # English joins
