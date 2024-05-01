@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 
-def process_chat(lines):
+def process_chat((file_path):
     # Adjusted regex patterns for enhanced extraction
     join_patterns = [
         r'\d+/\d+/\d+, \d+:\d+ - (.+?) joined using this community\'s invite link',  # English joins
@@ -16,21 +16,22 @@ def process_chat(lines):
 
     join_data = []
     leave_data = []
-
-    for line in lines:
-        for pattern in join_patterns:
-            join_match = re.search(pattern, line)
-            if join_match:
-                datetime, user_info = line.split(' - ')[:2]
-                user = join_match.group(1)
-                join_data.append((datetime, user))
-
-        for pattern in leave_patterns:
-            leave_match = re.search(pattern, line)
-            if leave_match:
-                datetime, user_info = line.split(' - ')[:2]
-                user = leave_match.group(1)
-                leave_data.append((datetime, user))
+    
+    with open(file_path, 'r', encoding='utf-8') as file:
+        for line in lines:
+            for pattern in join_patterns:
+                join_match = re.search(pattern, line)
+                if join_match:
+                    datetime, user_info = line.split(' - ')[:2]
+                    user = join_match.group(1)
+                    join_data.append((datetime, user))
+    
+            for pattern in leave_patterns:
+                leave_match = re.search(pattern, line)
+                if leave_match:
+                    datetime, user_info = line.split(' - ')[:2]
+                    user = leave_match.group(1)
+                    leave_data.append((datetime, user))
 
     # Create dataframes and process the data to determine final status
     df_joins = pd.DataFrame(join_data, columns=['Datetime', 'User'])
