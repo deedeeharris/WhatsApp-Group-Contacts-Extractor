@@ -6,11 +6,11 @@ def process_chat(lines):
     # Adjusted regex patterns for enhanced extraction
     join_patterns = [
         r'\d+/\d+/\d+, \d+:\d+ - (.+?) joined using this community\'s invite link',  # English joins
-        r'\d+\.\d+\.\d+, \d+:\d+ - \u200f?ההצטרפות של (.+?) בוצעה'  # Hebrew joins
+        r'\d+\.\d+\.\d+, \d+:\d+ - \u200fההצטרפות של (.*?) בוצעה'  # Hebrew joins
     ]
     leave_patterns = [
         r'\d+/\d+/\d+, \d+:\d+ - (.+?) left',  # English leaves
-        r'\d+\.\d+\.\d+, \d+:\d+ - (.+?) יצא/ה',  # Hebrew leaves
+        r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) יצא/ה',  # Hebrew leaves
         r'\d+/\d+/\d+, \d+:\d+ - (.+?), and \d+ others left'  # English multiple leaves
     ]
 
