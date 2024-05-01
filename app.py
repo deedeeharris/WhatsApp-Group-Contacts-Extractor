@@ -11,7 +11,9 @@ def process_chat(lines):
     leave_patterns = [
         r'\d+/\d+/\d+, \d+:\d+ - (.+?) left',  # English leaves
         r'\d+\.\d+\.\d+, \d+:\d+ - (.*?) יצא/ה',  # Hebrew leaves
-        r'\d+/\d+/\d+, \d+:\d+ - (.+?), and \d+ others left'  # English multiple leaves
+        r'\d+/\d+/\d+, \d+:\d+ - (.+?), and \d+ others left',  # English multiple leaves
+        r'\d+\.\d+\.\d+, \d+:\d+ - (.*?), ו\d+ נוספים יצא/ה'  # Hebrew multiple leaves with counts
+
     ]
 
     join_data = []
