@@ -70,7 +70,7 @@ st.markdown('''# WhatsApp Group Contacts Extractor
 
 4. **Language Support**:
    - The app assumes that the WhatsApp chat log is in Hebrew.
-   - For support in other languages, please contact Yedidya Harris for updates.
+   - For support in other languages, please contact Yedidya Harris.
 
 5. **Disclaimer**:
    - Use the app at your own risk.
