@@ -66,8 +66,7 @@ st.markdown('''# WhatsApp Group Contacts Extractor
 
 3. **Process and Download**:
    - Once the chat file is uploaded, the app will process it to extract user join and leave events.
-   - After processing, a download button labeled "Download Excel file with Status" will appear.
-   - Click on the download button to save the processed data as an Excel file to your device.
+   - After processing, download the excel file.
 
 4. **Language Support**:
    - The app assumes that the WhatsApp chat log is in Hebrew.
