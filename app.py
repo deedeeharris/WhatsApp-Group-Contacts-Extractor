@@ -60,7 +60,7 @@ st.markdown('''# WhatsApp Group Contacts Extractor
    - Save the exported chat file to your device.
 
 2. **Upload the Chat History**:
-   - Access the WhatsApp Group Status Processor app.
+   - Open this app.
    - Click on the file uploader component labeled "Choose a WhatsApp chat log file (.txt)".
    - Select the exported chat text file from your device for upload.
 
